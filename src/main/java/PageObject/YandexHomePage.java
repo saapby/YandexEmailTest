@@ -1,5 +1,6 @@
 package PageObject;
 
+import com.google.common.base.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,8 +25,8 @@ public class YandexHomePage {
 
     public void logOutEmail() {
         driver.findElement(registrationName).click();
-        WebElement element = (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOfElementLocated(logOutButton));
+        WebDriverWait wait = new WebDriverWait(driver, 15);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(logOutButton));
         driver.findElement(logOutButton).click();
     }
 

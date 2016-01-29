@@ -2,6 +2,8 @@ package PageObject;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class YandexLoginPage {
     private By userName = By.cssSelector(".input__control[name='login']");
@@ -33,6 +35,7 @@ public class YandexLoginPage {
     }
 
     public boolean isVisibility() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(button));
         return driver.findElement(button).isDisplayed();
     }
 }

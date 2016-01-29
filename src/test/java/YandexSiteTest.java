@@ -1,9 +1,13 @@
 import PageObject.YandexHomePage;
 import PageObject.YandexLoginPage;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
+import java.util.concurrent.TimeUnit;
 
 public class YandexSiteTest extends Assert {
     private WebDriver driver;
@@ -15,6 +19,8 @@ public class YandexSiteTest extends Assert {
     @BeforeMethod
     public void setup() {
         driver = new FirefoxDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
         driver.get(URL_SITE);
         yandexLoginPage = new YandexLoginPage(driver);
         yandexHomePage = new YandexHomePage(driver);
@@ -25,8 +31,8 @@ public class YandexSiteTest extends Assert {
         driver.quit();
     }
 
-    @Test (threadPoolSize = 0, invocationCount = 10,  timeOut = 10000)
-    public void loginYandexEmailTest() throws InterruptedException {
+    @Test (invocationCount = 150)
+    public void loginYandexEmailTest() {
         yandexLoginPage.loginEmail("saa.tester", "SaaP9875959");
         assertTrue(yandexHomePage.getRegistrationName().contains("saa.tester@yandex"), "Login FAIL!!!");
         yandexHomePage.logOutEmail();
