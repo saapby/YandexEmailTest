@@ -1,41 +1,19 @@
+import Helpers.SetUpAndDownDriver;
 import PageObject.YandexHomePage;
 import PageObject.YandexLoginPage;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.testng.Assert;
-import org.testng.annotations.*;
+import PageObject.YandexPage;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.Test;
 
-import java.util.concurrent.TimeUnit;
+public class YandexSiteTest extends SetUpAndDownDriver{
+        private YandexPage yandexPage = new YandexPage(driver);
 
-public class YandexSiteTest extends Assert {
-    private WebDriver driver;
-    private YandexLoginPage yandexLoginPage;
-    private YandexHomePage yandexHomePage;
-    private final static String URL_SITE = "http://yandex.ru";
-
-
-    @BeforeMethod
-    public void setup() {
-        driver = new FirefoxDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        driver.get(URL_SITE);
-        yandexLoginPage = new YandexLoginPage(driver);
-        yandexHomePage = new YandexHomePage(driver);
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        driver.quit();
-    }
-
-    @Test (invocationCount = 150)
+    @Test //(invocationCount = 150)
     public void loginYandexEmailTest() {
-        yandexLoginPage.loginEmail("saa.tester", "SaaP9875959");
-        assertTrue(yandexHomePage.getRegistrationName().contains("saa.tester@yandex"), "Login FAIL!!!");
+        yandexPage.navigateToLoginPage();
+        YandexLoginPage yandexLoginPage = PageFactory.initElements(driver, YandexLoginPage.class);
+        YandexHomePage yandexHomePage = yandexLoginPage.loginEmail("saa.tester", "SaaP9875959");
+        //assertTrue(yandexHomePage.getRegistrationName().contains("saa.tester@yandex"), "Login FAIL!!!");
         yandexHomePage.logOutEmail();
-        assertTrue(yandexLoginPage.isVisibility(), "Logout FAIL!!!");
     }
 }

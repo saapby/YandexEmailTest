@@ -1,33 +1,32 @@
 package PageObject;
 
-import com.google.common.base.Function;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.FindBy;
 
-public class YandexHomePage {
-    private WebDriver driver;
+import static Helpers.Waiting.waitElement;
+
+public class YandexHomePage extends YandexPage{
 
     public YandexHomePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+//        PageFactory.initElements(driver, YandexLoginPage.class);
     }
 
-    private By registrationName = By.className("header-user-name");
-//    private By logOutButton = By.xpath(".//*[@id='user-dropdown-popup']/div/div/div[9]/a");
-    private By logOutButton = By.xpath("//a[contains(@href, 'embeddedauth&action=logout')]");
+    @FindBy(css = ".header-user-name.js-header-user-name")
+    public WebElement userEmail;
 
-    public String getRegistrationName() {
-        return driver.findElement(registrationName).getText();
+    @FindBy(xpath = ".//*[@id='nb-1']")
+    public WebElement emailUserName;
+
+    @FindBy (xpath = ".//a[contains(@href, 'mode=embeddedauth&action=logout')][contains(@class, 'b-mail-dropdown__item__content')]")
+    public WebElement logOutButton;
+
+    public YandexLoginPage logOutEmail() {
+        WebElement element = waitElement(driver, emailUserName);
+        element.click();
+        element = waitElement(driver, logOutButton);
+        element.click();
+        return new YandexLoginPage(driver);
     }
-
-    public void logOutEmail() {
-        driver.findElement(registrationName).click();
-        WebDriverWait wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(logOutButton));
-        driver.findElement(logOutButton).click();
-    }
-
 }

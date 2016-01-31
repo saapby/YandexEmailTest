@@ -1,41 +1,44 @@
 package PageObject;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
-public class YandexLoginPage {
-    private By userName = By.cssSelector(".input__control[name='login']");
-    private By password = By.cssSelector(".input__control[name='passwd']");
-    private By button = By.cssSelector(".auth__button[role='button'][type='submit']");
+import static Helpers.Waiting.waitElement;
 
-    private WebDriver driver;
+public class YandexLoginPage extends YandexPage {
 
     public YandexLoginPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+//        PageFactory.initElements(driver, YandexHomePage.class);
     }
 
+    @FindBy(css = ".input__control[name='login']")
+    public WebElement userNameField;
+
+    @FindBy (css = ".input__control[name='passwd']")
+    public WebElement passwordField;
+
+    @FindBy (xpath = ".//*[contains(@type, 'submit')][contains(@class, 'domik2__auth-button')]")
+    public WebElement loginButton;
+
     private void typeUserName(String user) {
-        driver.findElement(userName).sendKeys(user);
+        userNameField.sendKeys(user);
     }
 
     private void typePassword(String passwd) {
-        driver.findElement(password).sendKeys(passwd);
+        passwordField.sendKeys(passwd);
     }
 
-    private void clickButton() {
-        driver.findElement(button).click();
+    private void clickLoginButtonEnterEmail() {
+        WebElement element = waitElement(driver, loginButton);
+        element.click();
     }
 
-    public void loginEmail (String user, String passwd) {
+    public YandexHomePage loginEmail (String user, String passwd) {
         typeUserName(user);
         typePassword(passwd);
-        clickButton();
-    }
-
-    public boolean isVisibility() {
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(button));
-        return driver.findElement(button).isDisplayed();
+        clickLoginButtonEnterEmail();
+        return new YandexHomePage(driver);
     }
 }
