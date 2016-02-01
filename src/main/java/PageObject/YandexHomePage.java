@@ -1,5 +1,6 @@
 package PageObject;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,9 +24,35 @@ public class YandexHomePage extends YandexPage{
     @FindBy (xpath = ".//a[contains(@href, 'mode=embeddedauth&action=logout')][contains(@class, 'b-mail-dropdown__item__content')]")
     public WebElement logOutButton;
 
+    @FindBy (xpath = "//span/img[contains(@src, '//yastatic.net/mail/neo2') and contains(@class, 'b-mail-icon_lang')]")
+    public WebElement language;
+
+    //for assert language
+    @FindBy (css = "b-mail-icon_lang-en")
+    public WebElement langEN;
+
+    @FindBy (css = "b-mail-icon_lang-ru")
+    public WebElement langRU;
+
+    @FindBy (css = "b-mail-icon_lang-be")
+    public WebElement langBE;
+
     public YandexLoginPage logOutEmail() {
         waitElement(driver, emailUserName).click();
         waitElement(driver, logOutButton).click();
         return PageFactory.initElements(driver, YandexLoginPage.class);
+    }
+
+    public YandexHomePage changeLanguage (String str) {
+//        waitElement(driver, language).click();
+        language.click();
+//        WebElement lang = driver.findElement(By.xpath(".//img[contains(@alt, '" + str + "')]"));
+//        waitElement(lang, driver);
+//        lang.click();
+//        WebElement element = driver.findElement(By.xpath(".//img[contains(@alt, '" + str + "')]"));
+//        waitElement(driver, driver.findElement(By.xpath(".//img[contains(@alt, '" + str + "')]"))).click();
+        WebElement element = driver.findElement(By.xpath(".//img[contains(@alt, '" + str + "')]"));
+        waitElement(driver, element).click();
+        return this;
     }
 }
