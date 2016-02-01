@@ -3,6 +3,7 @@ package PageObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import static Helpers.Waiting.waitElement;
 
@@ -23,10 +24,8 @@ public class YandexHomePage extends YandexPage{
     public WebElement logOutButton;
 
     public YandexLoginPage logOutEmail() {
-        WebElement element = waitElement(driver, emailUserName);
-        element.click();
-        element = waitElement(driver, logOutButton);
-        element.click();
-        return new YandexLoginPage(driver);
+        waitElement(driver, emailUserName).click();
+        waitElement(driver, logOutButton).click();
+        return PageFactory.initElements(driver, YandexLoginPage.class);
     }
 }

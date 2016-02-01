@@ -3,6 +3,7 @@ package PageObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import static Helpers.Waiting.waitElement;
 
@@ -23,22 +24,21 @@ public class YandexLoginPage extends YandexPage {
     public WebElement loginButton;
 
     private void typeUserName(String user) {
-        userNameField.sendKeys(user);
+        waitElement(driver, userNameField).sendKeys(user);
     }
 
     private void typePassword(String passwd) {
-        passwordField.sendKeys(passwd);
+        waitElement(driver, passwordField).sendKeys(passwd);
     }
 
     private void clickLoginButtonEnterEmail() {
-        WebElement element = waitElement(driver, loginButton);
-        element.click();
+        waitElement(driver, loginButton).click();
     }
 
     public YandexHomePage loginEmail (String user, String passwd) {
         typeUserName(user);
         typePassword(passwd);
         clickLoginButtonEnterEmail();
-        return new YandexHomePage(driver);
+        return PageFactory.initElements(driver, YandexHomePage.class);
     }
 }

@@ -10,17 +10,14 @@ public class YandexPage {
     private final static String URL_SITE = "http://yandex.ru";
     protected WebDriver driver;
 
-    public YandexPage() {
-        this.driver = driver;
-    }
-
     public YandexPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public void navigateToLoginPage() {
+    public YandexLoginPage navigateToLoginPage() {
         driver.get(URL_SITE);
+        return new YandexLoginPage(driver);
     }
 
 }
